@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquina de Turing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Máquina de Turing para Formación de Moléculas</h1>
+    <label for="tape">Ingrese la cinta:</label>
+    <input type="text" id="tape" placeholder="Ejemplo: H+H+O">
+    <button onclick="runTuringMachine()">Ejecutar</button>
+    <div id="result"></div>
+
+    <script>
+        async function runTuringMachine() {
+            const tape = document.getElementById('tape').value;
+            const response = await fetch('/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tape })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = `Entrada: ${result.input}\nSalida: ${result.output}`;
+        }
+    </script>
+</body>
+</html>
