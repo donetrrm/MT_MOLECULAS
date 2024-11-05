@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquina de Turing para Formación de Moléculas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 50px);
+            gap: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #tape {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Máquina de Turing para Formación de Moléculas</h1>
+    
+    <label for="tape">Entrada de moléculas:</label>
+    <input type="text" id="tape" placeholder="Ejemplo: H+H+O" readonly>
+    
+    <div class="grid-container">
+        <!-- Botones para cada letra -->
+        <button onclick="addToTape('H')">H</button>
+        <button onclick="addToTape('C')">C</button>
+        <button onclick="addToTape('O')">O</button>
+        <button onclick="addToTape('N')">N</button>
+        <button onclick="addToTape('H')">H</button>
+        <button onclick="addToTape('L')">L</button>
+        <button onclick="addToTape('B')">B</button>
+        <button onclick="addToTape('r')">r</button>
+        <button onclick="addToTape('S')">S</button>
+        <button onclick="addToTape('P')">P</button>
+        <button onclick="addToTape('F')">F</button>
+        <button onclick="addToTape('A')">A</button>
+        <button onclick="addToTape('e')">e</button>
+        <!-- Botón con el signo + -->
+        <button onclick="addToTape('+')">+</button>
+    </div>
+    
+    <button onclick="runTuringMachine()">Ejecutar</button>
+    <div id="result"></div>
+
+    <script>
+        function addToTape(symbol) {
+            const tapeInput = document.getElementById('tape');
+            tapeInput.value += symbol;
+        }
+
+        async function runTuringMachine() {
+            const tape = document.getElementById('tape').value;
+            console.log('tape', JSON.stringify({ tape }));
+            const response = await fetch('/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tape })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = `Entrada: ${result.input}\nSalida: ${result.output}`;
+        }
+    </script>
+</body>
+</html>
